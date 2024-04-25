@@ -2,6 +2,8 @@ const UsersModel = require("../model/user.schema");
 const bcrypt = require(`bcryptjs`);
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+const CartModel = require("../model/cart.Schema");
+const FavModel = require("../model/fav.Schema");
 
 const getUsers = async (req, res) => {
     try {
@@ -52,8 +54,16 @@ const createUser = async (req, res) => {
        let salt = bcryptjs.genSaltSync(10);
        newUser.contrasenia = bcryptjs.hashSync(contrasenia, salt);
 
-       await newUser.save();
+       const newCart  = new CartModel({idUsuario: newUser._id})
+       const newFav  = new FavModel({idUsuario: newUser._id})
 
+       newUser.idCarrito = newCart._id;
+       newUser.idFavoritos = newFav._id;
+
+       await newUser.save();
+       await newCart.save();
+       await newFav.save();
+       
        res.status(201).json({ msg: "usuario creado correctamente"}, newUser );
     } catch (error) {
         res.status(500).json({ mensaje: "server error", error});  
