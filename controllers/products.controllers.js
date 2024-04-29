@@ -2,6 +2,9 @@ const resultValidator = require("../helpers/validatorResult");
 const ProductModel = require (`../model/product.schema`);
 const { validationResult } = require("express-validator");
 const cloudinary = require("../helpers/cloudinary");
+const UsersModel = require("../model/user.schema");
+const CartModel = require("../model/cart.Schema");
+const FavModel = require("../model/fav.Schema");
 
 const getProducts = async (req, res) => {
     try {
@@ -82,10 +85,64 @@ const deleteProduct = async(req, res) => {
     }
 };
 
+const addProdCart = async(req,res) => {
+    try {
+     const user = await UsersModel.findOne({_id: req.params.idUser});
+     const product = await UsersModel.findOne({_id: req.params.idProd});
+     const cart = await CartModel.findOne({_id: req.params.idCart});
+
+     if(user.idCarrito.toString() === cart._id.toString()){
+      const prodExistCart = cart.productos.filter((prod) => prod._id.toString() === product._id.toString());
+
+     if(prodExistCart.length) {
+        return res.status(400).json({msg:`Producto ya existe en el carrito`})
+     }
+
+      cart.productos.push(product)
+      await cart.save()
+      res.status(200).json({msg:"Producto cargado correctamente"})
+     } else {
+        conslole.log("ID carrito y/o usuario incorrecto")
+        res.send("No ok")
+     }
+
+    } catch (error) {
+        console.log(error)
+    }
+};
+
+const addProdFav = async(req,res) => {
+    try {
+     const user = await UsersModel.findOne({_id: req.params.idUser});
+     const product = await UsersModel.findOne({_id: req.params.idProd});
+     const fav = await FavModel.findOne({_id: req.params.idFav});
+
+     if(user.idFavoritos.toString() === fav._id.toString()){
+      const prodExistFav = fav.favoritos.filter((fav) => fav._id.toString() === product._id.toString());
+
+     if(prodExistCart.length) {
+        return res.status(400).json({msg:`Producto ya existe en el favorito`});
+     }
+
+      fav.favoritos.push(product)
+      await fav.save()
+      res.status(200).json({msg:"Producto cargado correctamente"})
+     } else {
+        conslole.log("ID carrito y/o usuario incorrecto")
+        res.send("No ok")
+     }
+
+    } catch (error) {
+        console.log(error)
+    }
+};
+
 module.exports = {
     getProducts,
     getOneProduct,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    addProdCart,
+    addProdFav,
 };

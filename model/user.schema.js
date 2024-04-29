@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 
 const UsersSchema = new Schema({
     nombreUsuario:{
@@ -19,10 +19,10 @@ const UsersSchema = new Schema({
         default: "user",
     },
     idCarrito:{
-        type: String,
+        type: Types.ObjectId,
     },
     idFavoritos:{
-        type: String,
+        type: Types.ObjectId,
     },
 });
 

@@ -1,8 +1,8 @@
-const { Schema, model } = require(`mongoose`);
+const { Schema, model, Types } = require(`mongoose`);
 
 const CartSchema = new Schema({
     idUsuario: {
-        type: String,
+        type: Types.ObjectId,
     },
     productos: [],
 });
