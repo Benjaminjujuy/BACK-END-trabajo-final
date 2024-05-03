@@ -1,7 +1,11 @@
 const express = require(`express`);
-const { getAllcarts } = require("../controllers/carrito.controllers");
-const route = express.Router();
+const { 
+    getAllcarts, 
+    deleteOneProdCart
+ } = require("../controllers/carrito.controllers");
+const router = express.Router();
 
-route.get(`/`, getAllcarts);
+router.get(`/`, getAllcarts);
+router.delete(`/:idCart/:idProd`, deleteOneProdCart)
 
-module.exports = route;
+module.exports = router;
