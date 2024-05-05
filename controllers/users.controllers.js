@@ -129,7 +129,9 @@ const loginUser = async(req,res) =>{
        }
 
        const payload = {
-        id: userExist._id,
+        idUsuario: userExist._id,
+        idCarrito: userExist.idCarrito,
+        idFavorito: userExist.idFavorito,
         role: userExist.role,
        };
 
