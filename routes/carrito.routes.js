@@ -3,9 +3,10 @@ const {
     getAllcarts, 
     deleteOneProdCart
  } = require("../controllers/carrito.controllers");
+const auth = require("../middlewars/auth");
 const router = express.Router();
 
-router.get(`/`, getAllcarts);
-router.delete(`/:idCart/:idProd`, deleteOneProdCart)
+router.get("/", auth(`user`), getAllcarts);
+router.delete("/:idCart/:idProd", auth(`user`), deleteOneProdCart);
 
 module.exports = router;

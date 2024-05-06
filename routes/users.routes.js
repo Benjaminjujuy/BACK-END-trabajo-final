@@ -13,7 +13,7 @@ const auth = require("../middlewars/auth");
 const route = express.Router();
 
 route.get("/", auth("admin"), getUsers);
-route.get("/:id",[check(`id`, `Formato incorrecto`).isMongoId()], getOneUser);
+route.get("/:id",[check("id", "Formato incorrecto").isMongoId()], auth(`admin`),getOneUser);
 route.post(
     "/", 
     [
@@ -30,7 +30,7 @@ route.post(
     check(`nombreUsuario`, `Formato incorrecto`).isEmail(),
     check("contrasenia", "Max: 30 Min: 8").isLength({min:8, max: 30}),
     ], loginUser);
-route.put("/:id",[check(`id`, `Formato incorrecto`).isMongoId()], updateUser);
-route.delete("/:id",[check(`id`, `Formato incorrecto`).isMongoId()], deleteUser);
+route.put("/:id",[check(`id`, `Formato incorrecto`).isMongoId()], auth(`admin`),updateUser);
+route.delete("/:id",[check(`id`, `Formato incorrecto`).isMongoId()], auth(`admin`),deleteUser);
 
 module.exports = route;

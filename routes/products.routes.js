@@ -14,18 +14,15 @@ const multer = require("../middlewars/multer");
 const auth = require("../middlewars/auth");
 
 route.get("/", getProducts);
-route.get("/:id",[check(`id`, `Formato incorrecto`).isMongoId()],getOneProduct);
-route.post( "/", multer.single("imagen"),createProduct);
+route.get("/:id",[check("id", "Formato incorrecto").isMongoId()],getOneProduct);
+
+route.post( "/", multer.single("imagen"), auth(`admin`),createProduct);
 route.post("/cart/:idProd/", auth("user"), addProdCart);
 route.post("/fav/:idProd/", auth("user"), addProdFav);
-  /* [
-    check(`Titulo`, `Campo vacio`).notEmpty(),
-    check(`Precio`, `Campo vacio`).notEmpty(),
-    check(`Codigo`, `Campo vacio`).notEmpty(),
-   ], */
 
 
-route.put("/:id",[check(`id`, `Formato incorrecto`).isMongoId()], updateProduct);
-route.delete("/:id",[check(`id`, `Formato incorrecto`).isMongoId()], deleteProduct);
+route.put("/:id",[check("id", "Formato incorrecto").isMongoId()], auth(`admin`),updateProduct);
+
+route.delete("/:id",[check("id", "Formato incorrecto").isMongoId()], auth(`admin`),deleteProduct);
 
 module.exports = route;
