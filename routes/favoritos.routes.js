@@ -7,6 +7,6 @@ const auth = require("../middlewars/auth");
 const router = express.Router()
 
 router.get("/", auth(`user`),getAllFavoritos);
-router.delete("/:idFav/:idProd", auth(`user`),deleteOneProdFav);
+router.delete("/:idProd", auth(`user`),deleteOneProdFav);
 
 module.exports = router;
